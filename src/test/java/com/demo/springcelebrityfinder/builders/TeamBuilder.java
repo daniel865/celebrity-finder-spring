@@ -9,48 +9,37 @@ import java.util.List;
 public class TeamBuilder {
 
     public static Team createTeamWithCelebrity() {
-        Person celebrity = createCelebrity("A");
+        Person anna = new Person("Anna");
+        Person bjor = new Person("Bjor");
+        Person catlin = new Person("Catlin");
+        Person david = new Person("David");
 
-        List<Person> members = Arrays.asList(
-                celebrity,
-                createPerson("B", celebrity),
-                createPerson("C", celebrity),
-                createPerson("D", celebrity)
-        );
+        Person annaWithRelations = createPersonWithRelations(anna, Arrays.asList(bjor, catlin, david));
+        Person catlinWithRelations = createPersonWithRelations(catlin, Arrays.asList(anna, bjor));
+        Person davidWithRelations = createPersonWithRelations(david, Arrays.asList(anna, bjor, catlin));
 
-        return new Team(members);
+        return new Team(Arrays.asList(annaWithRelations, catlinWithRelations, davidWithRelations, bjor));
     }
 
     public static Team createTeamWithoutCelebrity() {
-        List<Person> members = Arrays.asList(
-                createPerson("A", null),
-                createPerson("B", null),
-                createPerson("C", null),
-                createPerson("D", null)
-        );
+        Person anna = new Person("Anna");
+        Person bjor = new Person("Bjor");
+        Person catlin = new Person("Catlin");
+        Person david = new Person("David");
 
-        return new Team(members);
+        Person annaWithRelations = createPersonWithRelations(anna, Arrays.asList(bjor, catlin, david));
+        Person bjorWithRelations = createPersonWithRelations(bjor, Arrays.asList(anna, catlin, david));
+        Person catlinWithRelations = createPersonWithRelations(catlin, Arrays.asList(anna, bjor, david));
+        Person davidWithRelations = createPersonWithRelations(david, Arrays.asList(anna, bjor, catlin));
+
+        return new Team(Arrays.asList(annaWithRelations, bjorWithRelations, catlinWithRelations, davidWithRelations));
     }
 
-    public static Team createTeamWithMoreThanOneCelebrity() {
-        Person celebrity1 = createCelebrity("A");
-        Person celebrity2 = createCelebrity("B");
 
-        List<Person> members = Arrays.asList(
-                createPerson("C", celebrity1),
-                createPerson("D", celebrity2)
-        );
-
-        return new Team(members);
+    public static Person createPersonWithRelations(Person person, List<Person> relations) {
+        return new Person(person.getId(), relations);
     }
 
-    private static Person createCelebrity(String id) {
-        return new Person(id, null);
-    }
-
-    private static Person createPerson(String id, Person acquainted) {
-        return new Person(id, acquainted);
-    }
 
 }
 

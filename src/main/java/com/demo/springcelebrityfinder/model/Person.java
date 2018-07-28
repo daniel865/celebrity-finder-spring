@@ -1,11 +1,12 @@
 package com.demo.springcelebrityfinder.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Person {
 
     private String id;
-    private Person personAcquainted;
+    private List<Person> personsAcquainted;
 
     private Person() {
     }
@@ -14,17 +15,17 @@ public class Person {
         this.id = id;
     }
 
-    public Person(String id, Person personAcquainted) {
+    public Person(String id, List<Person> personsAcquainted) {
         this.id = id;
-        this.personAcquainted = personAcquainted;
+        this.personsAcquainted = personsAcquainted;
     }
 
     public String getId() {
         return id;
     }
 
-    public Person getPersonAcquainted() {
-        return personAcquainted;
+    public List<Person> getPersonsAcquainted() {
+        return personsAcquainted;
     }
 
     @Override
@@ -41,12 +42,11 @@ public class Person {
         return Objects.hash(id);
     }
 
-
     @Override
-    public String   toString() {
+    public String toString() {
         return "Person{" +
                 "id='" + id + '\'' +
-                ", personAcquainted=" + personAcquainted +
+                ", personsAcquainted=" + personsAcquainted +
                 '}';
     }
 }

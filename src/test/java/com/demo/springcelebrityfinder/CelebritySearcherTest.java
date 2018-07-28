@@ -18,7 +18,7 @@ public class CelebritySearcherTest {
 
         Person celebrity = celebritySearcher.findCelebrity(teamWithCelebrity);
 
-        assertThat(celebrity.getId()).isEqualToIgnoringCase("A");
+        assertThat(celebrity.getId()).isEqualToIgnoringCase("Bjor");
     }
 
     @Test
@@ -32,16 +32,6 @@ public class CelebritySearcherTest {
         assertThat(celebrity).isNull();
     }
 
-    @Test
-    public void whenTeamHasMoreThanOneCelebrityIsGivenExpectedReturnNull() {
-        Team teamWithMoreThanOneCelebrity = TeamBuilder.createTeamWithMoreThanOneCelebrity();
-
-        CelebritySearcher celebritySearcher = new CelebritySearcher();
-
-        Person celebrity = celebritySearcher.findCelebrity(teamWithMoreThanOneCelebrity);
-
-        assertThat(celebrity).isNull();
-    }
 
 
 }

@@ -17,7 +17,7 @@ This solutions make some basic assumptions about the members of a team:
 The input data of this program require some format. Also the file with the input data is located in the 
 resources directory:
 
-* The first line indicates the number of members
+* The first line indicates the number (N) of members
 * The next lines of the file indicates the members of the team
-* A line is compose of two comma-separated values. The first value is the person's ID 
-and the second(optional) the celebrity
+* The following lines describe the relations between the members using comma-separated list of values. The first value
+is the member of the team and the next values the people that knows 

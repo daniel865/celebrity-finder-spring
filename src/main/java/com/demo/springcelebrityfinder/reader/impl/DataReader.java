@@ -1,6 +1,8 @@
 package com.demo.springcelebrityfinder.reader.impl;
 
+import com.demo.springcelebrityfinder.exceptions.FileFormatException;
 import com.demo.springcelebrityfinder.reader.IDataReader;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -11,14 +13,12 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @Component
 public class DataReader implements IDataReader {
 
-    private final static Logger LOGGER = Logger.getLogger(DataReader.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(DataReader.class);
 
     @Override
     public StringBuilder readTeamFromFile(String filename) {
@@ -29,11 +29,17 @@ public class DataReader implements IDataReader {
             lines.forEach(line -> data.append(line).append("\n"));
             lines.close();
 
+            if (data.toString().isEmpty()) {
+                throw new FileFormatException("File can't be empty");
+            }
+
             return data;
         } catch (URISyntaxException e) {
-            LOGGER.log(Level.SEVERE, "Error: URI to resource is incorrect");
+            LOGGER.error("Error: URI to resource is incorrect");
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Error reading data from file");
+            LOGGER.error("Error reading data from file");
+        }  catch (FileFormatException e) {
+            LOGGER.error(e.getMessage(), e);
         }
 
         return null;

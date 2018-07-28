@@ -2,6 +2,7 @@ package com.demo.springcelebrityfinder;
 
 import com.demo.springcelebrityfinder.creator.ITeamCreator;
 import com.demo.springcelebrityfinder.creator.impl.TeamCreator;
+import com.demo.springcelebrityfinder.exceptions.FileFormatException;
 import com.demo.springcelebrityfinder.model.Person;
 import com.demo.springcelebrityfinder.model.Team;
 import com.demo.springcelebrityfinder.reader.IDataReader;
@@ -37,16 +38,31 @@ public class SpringCelebrityFinderApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Team team = teamCreator.createTeamFromFile(FILENAME);
+		try {
+			Team team = teamCreator.createTeamFromFile(FILENAME);
 
-		Person celebrity = celebritySearcher.findCelebrity(team);
+			if (nonNull(team)) {
+				Person celebrity = celebritySearcher.findCelebrity(team);
 
-		if (nonNull(celebrity)) {
+				if (nonNull(celebrity)) {
+					LOGGER.info("-------------------------------------------------------------");
+					LOGGER.info("The Celebrity in the team is: " + celebrity.getId());
+					LOGGER.info("-------------------------------------------------------------");
+				} else {
+					LOGGER.info("-------------------------------------------------------------");
+					LOGGER.info("Error: The team has a wrong configuration");
+					LOGGER.info("-------------------------------------------------------------");
+				}
+			}
+		} catch (FileFormatException e) {
 			LOGGER.info("-------------------------------------------------------------");
-			LOGGER.info("The Celebrity in the team is: " + celebrity.getId());
+			LOGGER.info("Error: The team has a wrong configuration");
 			LOGGER.info("-------------------------------------------------------------");
-		} else {
-			LOGGER.info("\n Error: The team has a wrong configuration \n");
+		} catch(IllegalArgumentException e) {
+			LOGGER.info("-------------------------------------------------------------");
+			LOGGER.info("Error: The file has a wrong configuration");
+			LOGGER.info("-------------------------------------------------------------");
 		}
+
 	}
 }

@@ -1,6 +1,10 @@
 4
-"A"
-"B", "A"
-"C", "A"
-"D", "A"
+"Anna"
+"Bjor"
+"Catlin"
+"David"
+"Anna", "Catlin", "David", "Bjor"
+"David", "Anna", "Bjor", "Catlin"
+"Catlin", "Anna", "Bjor"
+
 

@@ -61,7 +61,7 @@ public class CelebritySearcher implements ICelebritySearcher {
      * @return Boolean value that indicates that a person is a celebrity
      */
     private Boolean isCelebrity(Person possibleCelebrity) {
-        return possibleCelebrity.getPersonAcquainted() == null ? Boolean.TRUE : Boolean.FALSE;
+        return possibleCelebrity.getPersonsAcquainted() == null || possibleCelebrity.getPersonsAcquainted().isEmpty();
     }
 
     /**
@@ -71,9 +71,9 @@ public class CelebritySearcher implements ICelebritySearcher {
      * @return Boolean value that indicates if person1 knows person2
      */
     private Boolean knows(Person person1, Person person2) {
-        if (person1.getPersonAcquainted() == null) {
+        if (person1.getPersonsAcquainted() == null || person1.getPersonsAcquainted().isEmpty()) {
             return Boolean.FALSE;
-        } else if (person1.getPersonAcquainted().getId().equals(person2.getId())) {
+        } else if (person1.getPersonsAcquainted().contains(person2)) {
             return Boolean.TRUE;
         }
         return Boolean.TRUE;
