@@ -72,6 +72,13 @@ public class TeamCreator implements ITeamCreator {
         return teamWithRelations;
     }
 
+    /**
+     * Validate if the quantity of members and theirs relations are the same
+     * @param linesMembers Array with the members of the Team
+     * @param linesRelations Array with the relations between the members
+     * @throws FileFormatException Exception that is throw when the quantity of members and theirs relations aren't
+     * the same
+     */
     private void validateMembersAndRelations(String[] linesMembers, String[] linesRelations) throws FileFormatException {
         if (linesMembers.length != linesRelations.length) {
             throw new FileFormatException("Error: There are no enough relations for the team members");

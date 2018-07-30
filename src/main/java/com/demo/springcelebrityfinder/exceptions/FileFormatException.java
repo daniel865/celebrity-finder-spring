@@ -1,5 +1,8 @@
 package com.demo.springcelebrityfinder.exceptions;
 
+/**
+ * Exceptions that is used when the input file is filled with wrong data
+ */
 public class FileFormatException extends RuntimeException {
 
     public FileFormatException() {
