@@ -84,7 +84,7 @@ public class CelebritySearcher implements ICelebritySearcher {
                 return Boolean.FALSE;
             }
         }
-        return Boolean.TRUE && possibleCelebrity.getPersonsAcquainted().isEmpty();
+        return possibleCelebrity.getPersonsAcquainted().isEmpty();
     }
 
     /**
