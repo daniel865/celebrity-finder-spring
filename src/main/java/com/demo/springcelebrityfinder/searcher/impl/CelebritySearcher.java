@@ -6,8 +6,8 @@ import com.demo.springcelebrityfinder.searcher.ICelebritySearcher;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 /**
  * This class is an implementation of the interface ICelebritySearcher that uses an Stack to store the members that
@@ -34,25 +34,40 @@ public class CelebritySearcher implements ICelebritySearcher {
      * @return Value that indicates if a celebrity was found
      */
     public Person findCelebrity(Team team) {
-        if (checkValidityTeam(team)) {
-            Stack<Person> stackOfPeople = createStackOfPeople(team);
+        Stack<Person> stackOfPeople = createStackOfPeople(team);
 
-            while (stackOfPeople.size() > 1) {
-                Person person1 = stackOfPeople.pop();
-                Person person2 = stackOfPeople.pop();
+        while (stackOfPeople.size() > 1) {
+            Person person1 = stackOfPeople.pop();
+            Person person2 = stackOfPeople.pop();
 
-                if (knows(person1, person2)) {
-                    stackOfPeople.push(person2);
-                } else {
-                    stackOfPeople.push(person1);
-                }
-            }
+            Person possibleCelebrity = knows(person1, person2);
 
-            Person lastingPerson = stackOfPeople.pop();
-
-            return isCelebrity(lastingPerson) ? lastingPerson : null;
+            stackOfPeople.push(possibleCelebrity);
         }
-        return null;
+
+        Person lastingPerson = stackOfPeople.pop();
+
+        return isCelebrity(lastingPerson, team.getPeople()) ? lastingPerson : null;
+    }
+
+    /**
+     * Check if a person knows another. Return the person may be the celebrity
+     * @param personA 
+     * @param personB
+     * @return Person that may be the celebrity
+     */
+    public Person knows(Person personA, Person personB) {
+        List<Person> people = personA.getPersonsAcquainted();
+
+        Optional<Person> optionalPerson = people
+                .stream()
+                .filter(person -> this.compareNames(person.getId(), personB.getId()))
+                .findAny();
+
+        if (optionalPerson.isPresent()) {
+            return personB;
+        }
+        return personA;
     }
 
     /**
@@ -60,40 +75,42 @@ public class CelebritySearcher implements ICelebritySearcher {
      * @param possibleCelebrity Person to check if is a celebrity
      * @return Boolean value that indicates that a person is a celebrity
      */
-    private Boolean isCelebrity(Person possibleCelebrity) {
-        return possibleCelebrity.getPersonsAcquainted() == null || possibleCelebrity.getPersonsAcquainted().isEmpty();
-    }
-
-    /**
-     * Returns true if the person1 knows the person2, false otherwise
-     * @param person1 Person 1
-     * @param person2 Person 2
-     * @return Boolean value that indicates if person1 knows person2
-     */
-    private Boolean knows(Person person1, Person person2) {
-        if (person1.getPersonsAcquainted() == null || person1.getPersonsAcquainted().isEmpty()) {
-            return Boolean.FALSE;
-        } else if (person1.getPersonsAcquainted().contains(person2)) {
-            return Boolean.TRUE;
+    private Boolean isCelebrity(Person possibleCelebrity, List<Person> members) {
+        for (Person member : members) {
+            if (member.getPersonsAcquainted() != null && !contains(member, possibleCelebrity.getId())) {
+                return Boolean.FALSE;
+            }
         }
         return Boolean.TRUE;
     }
 
     /**
-     * Check if a Team is valid based on the following rule. A team is valid if have only one celebrity per team and
-     * the team has a celebrity
-     * @param team Team with its members
-     * @return Boolean value that indicates that the team accomplish the previous rules
+     * Compare if the names of the persons are equal
+     * @param personA First person
+     * @param personB Second person
+     * @return Boolean value that indicates if the names are equal
      */
-    private Boolean checkValidityTeam(Team team) {
-        List<Person> celebrities = team.getPeople()
-                .stream()
-                .filter(this::isCelebrity)
-                .collect(Collectors.toList());
-
-        return celebrities.size() == 1 ? Boolean.TRUE : Boolean.FALSE;
+    private Boolean compareNames(String personA, String personB) {
+        return personA.trim().equals(personB.trim());
     }
 
+    /**
+     * Check if a person is a acquainted with other
+     * @param person Person with its relations
+     * @param personName Name of the person to search
+     * @return Boolean values that indicates if the persons are acquainted
+     */
+    private Boolean contains(Person person, String personName) {
+        List<Person> personsAcquainted = person.getPersonsAcquainted();
+        Optional<Person> optionalPerson = personsAcquainted
+                .stream()
+                .filter(person1 -> compareNames(person1.getId(), personName))
+                .findAny();
 
+        if (optionalPerson.isPresent()) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
 
 }

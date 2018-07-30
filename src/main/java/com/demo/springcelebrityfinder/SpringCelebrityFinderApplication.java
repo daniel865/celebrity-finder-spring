@@ -50,7 +50,7 @@ public class SpringCelebrityFinderApplication implements CommandLineRunner {
 					LOGGER.info("-------------------------------------------------------------");
 				} else {
 					LOGGER.info("-------------------------------------------------------------");
-					LOGGER.info("Error: The team has a wrong configuration");
+					LOGGER.info("Error: There is no celebrity in the Team");
 					LOGGER.info("-------------------------------------------------------------");
 				}
 			}

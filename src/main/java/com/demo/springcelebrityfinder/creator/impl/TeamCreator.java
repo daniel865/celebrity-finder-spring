@@ -41,6 +41,11 @@ public class TeamCreator implements ITeamCreator {
         return null;
     }
 
+    /**
+     * Create a Team using the lines of the file as input
+     * @param lines Lines of the file
+     * @return Team with  all theirs relations
+     */
     private Team createTeam(String[] lines) {
 
         // Get the first line that represent the size  of the Team
@@ -79,20 +84,20 @@ public class TeamCreator implements ITeamCreator {
      * @return Members of the Team
      */
     private List<Person> createMembers(String[] linesMembers) {
-        Stream<String> stringStream = Stream.of(linesMembers);
-        return stringStream.map(Person::new).collect(Collectors.toList());
+        Stream<String> linesWithoutSpaces = Stream.of(linesMembers).map(s -> s.trim());
+        return linesWithoutSpaces.map(Person::new).collect(Collectors.toList());
     }
 
     /**
-     *
-     * @param team
-     * @param relationsPerPerson
-     * @return
+     * Create the relations between the team members
+     * @param team Team to create the relations
+     * @param relationsPerPerson Array with the relations for each member of the team
+     * @return Team with relations between members
      */
     private Team createRelations(Team team, String[] relationsPerPerson) {
         List<Person> members = team.getPeople();
 
-        Stream<String> streamRelations = Stream.of(relationsPerPerson);
+        Stream<String> streamRelations = Stream.of(relationsPerPerson).map(s -> s.trim());
 
         List<Person> people = streamRelations.map(relations -> {
             Optional<Person> optionalPerson = findPersonInMembers(relations, members);
