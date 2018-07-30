@@ -73,7 +73,7 @@ public class TeamCreator implements ITeamCreator {
     }
 
     private void validateMembersAndRelations(String[] linesMembers, String[] linesRelations) throws FileFormatException {
-        if (linesMembers.length - 1 != linesRelations.length) {
+        if (linesMembers.length != linesRelations.length) {
             throw new FileFormatException("Error: There are no enough relations for the team members");
         }
     }

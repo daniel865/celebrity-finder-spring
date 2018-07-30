@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * This class is an implementation of the interface ICelebritySearcher that uses an Stack to store the members that
@@ -47,7 +48,9 @@ public class CelebritySearcher implements ICelebritySearcher {
 
         Person lastingPerson = stackOfPeople.pop();
 
-        return isCelebrity(lastingPerson, team.getPeople()) ? lastingPerson : null;
+        List<Person> membersWithoutCelebrity = removeMemberFromTeam(team.getPeople(), lastingPerson);
+
+        return isCelebrity(lastingPerson, membersWithoutCelebrity) ? lastingPerson : null;
     }
 
     /**
@@ -111,6 +114,19 @@ public class CelebritySearcher implements ICelebritySearcher {
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
+    }
+
+    /**
+     * Remove the possible celebrity from the Team
+     * @param members Members of the Team
+     * @param person Person that may be a celebrity
+     * @return Team without the celebrity
+     */
+    private List<Person> removeMemberFromTeam(List<Person> members, Person person) {
+        return members
+                .stream()
+                .filter(person1 -> !person1.getId().equals(person.getId()))
+                .collect(Collectors.toList());
     }
 
 }

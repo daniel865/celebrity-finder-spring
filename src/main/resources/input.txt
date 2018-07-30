@@ -6,5 +6,4 @@
 "Anna", "Catlin", "David", "Bjor"
 "David", "Anna", "Bjor", "Catlin"
 "Catlin", "Anna", "Bjor"
-
-
+"Bjor"
